@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	 <!-- Spring container에게 정보를 제공하는 설정정보파일
+	     객체(bean)를 생성하고 주입하는 일을 한다.  -->
+	     
+	 <!-- 객체 생성방법  -->     
+	 <!-- <bean id="해당객체를 호출하는 이름" 
+		       class="객체를 생성할 클래스위치" /> -->    
+     <!-- OracleDAO oracle = new OracleDAO(); -->
+	 <bean id="oracle" class="com.ict.ex02.OracleDAO" /> 
+	 
+	 <!-- MariaDAO maria = new MariaDAO(); -->   
+	 <bean id="maria" class="com.ict.ex02.MariaDAO" /> 
+	 
+	 <!-- 실행할 Service 클래스도 만들자 -->
+	 <!-- 위에서 생성한 bean을 setter, 생성자를 이용해서 
+	      아래에 있는 service엔 넣어주는 것 => 의존성주입(DI) -->
+	 <bean id="service" class="com.ict.ex02.Service">
+	 	<!-- 1. setter 이용하기 -->
+	 	<!-- <property name="dao" ref="maria"></property> -->
+	 	
+	 	<!-- 2. 생성자 이용하기  -->
+	 	<constructor-arg name="dao"  ref="oracle"></constructor-arg>
+	 </bean>   
+</beans>
+
+
+
+
+
+

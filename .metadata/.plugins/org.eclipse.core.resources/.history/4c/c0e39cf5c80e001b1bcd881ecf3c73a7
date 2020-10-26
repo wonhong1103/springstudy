@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="member">
+ <select id="login" parameterType="com.ict.db.MVO" resultType="mvo">
+		select * from members where m_id = #{m_id} and m_pw = #{m_pw} 
+	</select>
+	
+	
+	
+	
+	<select id="p_cartlist" parameterType="Map" resultType="cvo">
+		select * from cart where id=#{id} and p_num=#{p_num}
+	</select>
+	
+	<insert id="cartInsert" parameterType="cvo">
+		insert into cart values(cart_seq.nextval, #{p_num}, #{p_name},#{p_price},1,#{id})
+	</insert>
+	
+	<update id="cartUpdate" parameterType="cvo">
+		update cart set p_su = p_su + 1  where id=#{id} and p_num=#{p_num} 
+	</update>
+	
+	<select id="cartall" parameterType="String" resultType="cvo">
+		select * from cart where id = #{id}
+	</select>
+	<update id="cartup" parameterType="cvo">
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	<delete id="cartDel" parameterType="cvo">
+		delete from cart where id=#{id} and p_num=#{p_num}
+	</delete>
+	<update id="cartEdit" parameterType="cvo">
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	
+	
+	<!-- 전체 게시물의 수 -->
+	<select resultType="int" id="review_count">
+		select count(*) from board 
+	</select>
+	<!-- 목록 -->
+	<select resultType=""rvo"" parameterType="Map" id="review_list">
+		select * from(select rownum r_num, a.* from(select * from board order by groups desc, lev asc) a )where r_num between #{begin} and #{end} 
+	</select>
+	<!-- 원글 삽입 -->
+	<insert parameterType=""rvo"" id="review_insert">
+		insert into board values(board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,group_seq.nextval,0,0,sysdate,#{file_name}) 
+	</insert>
+	<!-- hit수 update -->
+	<update parameterType="String" id="review_hitup">
+		update board set hit = hit + 1 where idx = #{idx} 
+	</update>
+	<!-- 상세보기 -->
+	<select resultType=""rvo"" parameterType="String" id="review_onelist">
+		select * from board where idx = #{idx} 
+	</select>
+	<!-- 업데이트 -->
+	<update parameterType=""rvo"" id="review_update">
+		update board set writer=#{writer}, title=#{title},content=#{content}, file_name=#{file_name} where idx=#{idx} 
+	</update>
+	<!-- 삭제 -->
+	<delete parameterType="String" id="review_delete">
+		delete from board where idx = #{idx} 
+	</delete>
+	<!-- 원글에 달린 댓글 lev_up -->
+	<update parameterType="Map" id="review_lev_up">
+		update board set lev = lev + 1 where groups = #{groups} and lev >= #{lev} 
+	</update>
+	<!-- 댓글 삽입 -->
+	<insert parameterType="rvo" id="review_ans_insert">
+		insert into board values(board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,#{groups},#{step},#{lev},sysdate,#{file_name}) 
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+ </mapper>

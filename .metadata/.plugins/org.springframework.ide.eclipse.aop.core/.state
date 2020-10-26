@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="0814_DI"/>
+<aop-project name="0925_Shop"/>
+<aop-project name="1008_transaction"/>
+<aop-project name="0824_MVC_06"/>
+<aop-project name="Webpage"/>
+<aop-project name="0820_MVC_01"/>
+<aop-project name="0818_WebDI2"/>
+<aop-project name="0824_MVC_05"/>
+<aop-project name="0819_WebMyBatis"/>
+<aop-project name="0922_Borad"/>
+<aop-project name="0825_MVC_07"/>
+<aop-project name="0914_MVC_MyBatis"/>
+<aop-project name="0824_MVC_04_annotation"/>
+<aop-project name="0821_MVC_02"/>
+<aop-project name="0817_WebDI"/>
+<aop-project name="0828_MVC_MyBatis"/>
+<aop-project name="0921_MVC_BBS2"/>
+<aop-project name="0827_MVC_JDBC2"/>
+<aop-project name="1006_Ajax"/>
+<aop-project name="0821_MVC_03"/>
+<aop-project name="0916_MVC_BBS"/>
+<aop-project name="0826_MVC_JDBC"/>
+<aop-project name="0818_WebJDBC"/>
+<aop-project name="1020_Debugging_JUnit"/>
+</aop-reference-model>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="shoppingmall">
+ <!-- 로그인 -->	
+ <select id="login" resultType="mvo" parameterType="com.ict.db.MVO"  >
+	select * from members where m_id = #{m_id} and m_pw = #{m_pw} 
+</select>
+<!-- 회원가입 -->
+<insert id="member_Join" parameterType="com.ict.db.MVO">
+	insert into members(NEXT VALUE FOR member_seq, #{m_id}, #{m_pw}, #{m_name}, #{m_email},#{m_addr}) 
+</insert>
+	
+<select resultType="String" id="checkid" parameterType="String">
+	select m_id from members where m_id =#{m_id} 
+</select>
+	
+	<!--  아이디 확인 
+	<select id="idcheck" resultType="mvo">
+		select m_id from members where m_id = #{m_id}
+	</select>
+	 -->
+	
+	
+	<!-- 장바구니 -->
+	<select id="p_cartlist" resultType="cvo" parameterType="Map" >
+		select * from cart where m_id=#{m_id} and p_num=#{p_num}
+	</select>
+	
+	<insert id="cart_Insert" parameterType="cvo" >
+		insert into cart values(cart_seq.nextval, #{p_num}, #{p_name},#{p_price},1,#{id})
+	</insert>
+	
+	<update id="cart_Update" parameterType="cvo" >
+		update cart set p_su = p_su + 1  where id=#{id} and p_num=#{p_num} 
+	</update>
+	
+	<select id="cart_all" resultType="cvo" parameterType="String" >
+		select * from cart where id = #{id}
+	</select>
+	<update id="cart_up" parameterType="cvo" >
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	<delete id="cart_Del" parameterType="cvo" >
+		delete from cart where id=#{id} and p_num=#{p_num}
+	</delete>
+	<update id="cart_Edit" parameterType="cvo"  >
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	
+	
+	
+	<!-- 전체 qna의 수 -->
+	<select id="qna_count" resultType="int" >
+		select count(*) from qna
+	</select>
+	<!-- qna목록 -->
+	<select id="qna_list" resultType="qvo" parameterType="Map" >
+		select * from (select rownum r_num, a.* from (select * from qna order by q_idx desc) a) where r_num between #{begin} and #{end}
+	</select>
+	<!-- qna 작성 -->
+	<insert id="qna_insert" parameterType="qvo" >
+		insert into qna values(qna_seq.nextval, #{q_subject}, #{q_writer}, 
+		#{q_content}, #{q_file_name},#{q_pwd}, sysdate, 0, #{m_id})
+	</insert>
+	<!-- qna 조회수 update -->
+	<update id="qna_hit" parameterType="String" >
+		update qna set q_hit = q_hit + 1 where q_idx = #{q_idx} 
+	</update>
+	<!-- qna상세보기 -->
+	<select id="qna_onelist" resultType="qvo" parameterType="String" >
+		select * from qna where q_idx = #{q_idx} 
+	</select>
+	<!-- qna 수정 -->
+	<update id="qna_update" parameterType="qvo" >
+		update qna set q_subject=#{q_subject}, q_writer=#{q_writer}, q_content=#{q_content},
+		q_file_name=#{q_file_name} where q_idx=#{q_idx} 
+	</update>
+	<!-- qna 삭제 -->
+	<delete id="qna_delete" parameterType="String" >
+		delete from qna where q_idx = #{q_idx} 
+	</delete>
+	<!-- qna댓글 리스트 -->
+	<select id="q_c_list" parameterType="String" resultType="q_cvo">
+		select * from qnacomment where q_idx = #{q_idx} order by q_c_idx desc
+	</select>
+	<!-- qna 댓글 삽입 -->
+	<insert id="q_c_insert" parameterType="q_cvo" >
+		insert into qnacomment values(qnacomment_t_seq.nextval, #{q_c_writer},
+		 #{q_c_content},#{q_c_pwd}, sysdate, #{q_idx}, #{m_id}) 
+	</insert>
+	<!-- qna 삭제 -->
+	<delete id="q_c_delete" parameterType="q_cvo">
+		delete from qnacomment where q_c_idx = #{q_c_idx}
+	</delete>
+	
+	
+	
+	<!-- 전체 공지사항의 수  -->
+	<select id="notice_count" resultType="int">
+		select count(*) from notice
+	</select>
+	
+	<!-- 공지사항 리스트(being, end)  -->
+	<select id="notice_list" parameterType="Map" resultType="nvo">
+		select * from (select rownum r_num, a.* from (select * from notice order by n_idx desc) a) where r_num between #{begin} and #{end}
+	</select>
+	
+	<!-- 공지사항 삽입 -->
+	<insert id="notice_insert" parameterType="nvo">
+		insert into notice values(notice_seq.nextval, #{n_subject}, #{n_writer}, 
+		#{n_content}, #{n_file_name},#{n_pwd}, sysdate, 0, #{m_id})
+	</insert>
+	
+	<!-- 공지사항 조회수 업데이트 -->
+	<update id="notice_hit" parameterType="String">
+		update notice set n_hit = n_hit+1 where n_idx = #{n_idx}
+	</update>
+	
+	<!-- 공지사항 상세 보기  -->
+	<select id="notice_onelist" parameterType="String" resultType="nvo">
+		select * from notice where n_idx = #{n_idx}
+	</select>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="notice_delete" parameterType="String">
+		delete from notice where n_idx = #{n_idx}
+	</delete>
+	
+	<!-- 공지사항 업데이트 -->
+	<update id="notice_update" parameterType="nvo">
+		update notice set n_subject=#{n_subject}, n_writer=#{n_writer}, content=#{n_content},
+		n_file_name=#{n_file_name} where n_idx = #{n_idx}
+	</update>
+	
+	
+	
+	
+	<!-- 전체 후기의 수 -->
+	<select id="review_count" resultType="int" >
+		select count(*) from review 
+	</select>
+	<!-- 목록 -->
+	<select id="review_list" resultType="rvo" parameterType="Map" >
+		select * from (select rownum r_num, a.* from (select * from review order by r_idx desc) a) where r_num between #{begin} and #{end}
+	</select>
+	<!-- 후기 작성 -->
+	<insert id="review_insert" parameterType="rvo" >
+		insert into review values(review_seq.nextval, #{r_subject}, #{r_writer}, 
+		#{r_content}, #{r_file_name},#{r_pwd}, sysdate, 0, #{m_id})
+	</insert>
+	<!-- 조회수 update -->
+	<update id="review_hit" parameterType="String" >
+		update review set r_hit = r_hit + 1 where r_idx = #{r_idx} 
+	</update>
+	<!-- 상세보기 -->
+	<select id="review_onelist" resultType="rvo" parameterType="String" >
+		select * from review where r_idx = #{r_idx} 
+	</select>
+	<!-- 후기 수정 -->
+	<update id="review_update" parameterType="rvo" >
+		update review set r_subject=#{r_subject}, r_writer=#{r_writer}, r_content=#{r_content},
+		r_file_name=#{r_file_name} where r_idx=#{r_idx} 
+	</update>
+	<!-- 후기 삭제 -->
+	<delete id="review_delete" parameterType="String" >
+		delete from review where r_idx = #{r_idx} 
+	</delete>
+	<!-- 후기댓글 리스트 -->
+	<select id="r_c_list" parameterType="String" resultType="r_cvo">
+		select * from reviewcomment where r_idx = #{r_idx} order by r_c_idx desc
+	</select>
+	<!-- 후기 댓글 삽입 -->
+	<insert id="r_c_insert" parameterType="r_cvo" >
+		insert into reviewcomment values(reviewcomment_t_seq.nextval, #{r_c_writer},
+		 #{r_c_content},#{r_c_pwd}, sysdate, #{r_idx}, #{m_id}) 
+	</insert>
+	<!-- 댓글 삭제 -->
+	<delete id="r_c_delete" parameterType="r_cvo">
+		delete from reviewcomment where r_c_idx = #{r_c_idx}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ </mapper>

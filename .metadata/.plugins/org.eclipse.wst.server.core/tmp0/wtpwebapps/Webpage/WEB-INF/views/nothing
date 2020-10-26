@@ -1,0 +1,23 @@
+<%-- <!-- 리퀘스트의 주체 누군지 받아와 아무튼  null이 아니라면 누군가가 로그인 한건 마자 -->
+				<c:if test="${pageContext.request.userPrincipal.name != null }">
+				
+					<!-- 로그인 한사람의 이름이 admin이라면 admin탭도 뜨게해라! -->
+					<c:if test="${pageContext.request.userPrincipal.name == 'admin'}">
+						<li class="nav-item">
+						<a class="nav-link"	href="<c:url value="/admin"/>">AdminPage</a>
+						</li>
+					</c:if>
+					
+					<!-- 로그인 한 경우 로그아웃 탭 뜨게한다 -->
+					<li class="nav-item">
+					<a class="nav-link" href="<c:url value="/logout"/> ">Logout</a>
+					</li>
+				</c:if>
+				
+				<!-- 로그인 하지 않은경우! name이 null이면 로그인 안한상태 -->
+				<c:if test="${pageContext.request.userPrincipal.name == null}">
+					<!-- 로그인 탭 뜨게 한다. -->
+					<li class="nav-item">
+					<a class="nav-link" href="<c:url value="/login"/> ">Login</a>
+					</li>
+				</c:if> --%>

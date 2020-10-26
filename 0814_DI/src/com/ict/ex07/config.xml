@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="oracle" class="com.ict.ex07.OracleDAO" />
+	<bean id="dao" class="com.ict.ex07.MariaDAO" />
+	
+	<!-- 참조변수이름(dao)과 참조하는 bean의 id의 이름이 같으면 
+		autowire="byName"로 생략이 가능하다.
+	 -->
+	<bean id="service" class="com.ict.ex07.Service" autowire="byName">
+		<!-- 생성자  -->
+		<!-- <constructor-arg name="dao" ref="maria" /> -->
+		
+		<!-- setter -->
+		<!-- <property name="dao" ref="maria" /> -->
+		
+		<!-- autowire  -->
+		<!-- <property name="dao" ref="dao" /> -->
+	</bean>
+</beans>

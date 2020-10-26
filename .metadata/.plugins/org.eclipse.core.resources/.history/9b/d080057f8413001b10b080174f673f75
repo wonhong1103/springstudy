@@ -1,0 +1,193 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>제품상세화면</title>
+<style type="text/css">
+	.info_wrapper { padding:100px; width:100%; height:80%; padding-left:400px;}
+	.m_pic{ width:400px; height:600px;}
+	.s_pics {padding:10px; }
+	.s_pics img{ width:80px; height:120px;}
+	.s_pics fieldset{ width:340px; height:130px; }
+	.d_pics img{width: 800px; height: 800px; margin:50px;}
+</style>
+<style>
+	.detail{position:relative; left: 700px; bottom:700px;}
+</style>
+<script type="text/javascript">
+	function buy() {
+		if(${login=='ok'}){
+			location.href = ""
+		}else{
+		  alert("로그인 하세요");
+		  location.href = ""
+		}
+	function add_cart() {
+		if(${login=='ok'}){
+			location.href = "?idx=${vo.idx}"
+		}else{
+		  alert("로그인 하세요");
+		  location.href = ""
+		}
+		
+	}
+	
+		
+	}
+</script>
+</head>
+<body>
+	<jsp:include page="../frame/header.jsp" />	
+
+
+<!-- 상세내용 -->
+<div>
+<!-- 이미지 -->
+<div class=info_wrapper >
+	<img class= m_pic alt="My Image" src="../../images/맨투맨.jpeg"> <!-- ${vo.p_image_l } -->
+		<div class= s_pics>
+			<fieldset>
+			<legend>함께할 코디</legend>
+			<a href="#"><img src="../../images/맨투맨.jpeg" alt="My Image" ></a>
+			<a href="#"><img src="../../images/맨투맨.jpeg" alt="My Image" ></a>
+			<a href="#"><img src="../../images/맨투맨.jpeg" alt="My Image" ></a>
+			<a href="#"><img src="../../images/맨투맨.jpeg" alt="My Image" ></a>
+			</fieldset>
+			
+		</div>	
+		<!-- 기본정보 -->
+<div class="detail">
+<table style="border:0px;  text-align: left;" >
+	<tbody>
+		<tr>
+			<th>
+				<span style="font-size:12px;color:#000000;">상품명</span> 
+			</th>
+			<td>
+				<span style="font-size:12px;color:#000000;">반팔 티셔츠 5color</span> <!-- ${vo.p_name } -->
+			</td>
+		</tr>
+		<tr>
+			<th>
+				<span style="font-size:12px;color:#000000;">가격</span> 
+			</th>
+			<td>
+				<span style="font-size:12px;color:#000000;">₩ 19,000</span> <!-- <fmt:formatNumber value="${vo.p_price}" pattern="#,##0" />원 -->
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- 품목선택 -->
+<table>
+	<tbody>
+		<tr>
+			<th>Color</th>
+			<td>
+				<select>
+					<option value="*" selected link_image> [필수] 옵션을 선택해주세요 </option>
+					<option value="**" disabled link_image>----------------------------</option>
+					<option value="black" link_image>블랙</option>
+					<option value="white" link_image>화이트</option>
+					<option value="charcol" link_image>차콜</option>
+					<option value="navy" link_image>네이비</option>
+					<option value="wine" link_image>와인</option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<th>사이즈</th>
+			<td>
+				<select>
+					<option value="*" selected link_image> [필수] 옵션을 선택해주세요 </option>
+					<option value="**" disabled link_image>----------------------------</option>
+					<option value="small" link_image>small</option>
+					<option value="medium" link_image>medium</option>
+					<option value="large" link_image>large</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<button onclick="buy()">구매하기</button>
+				<button onclick="add_cart()">장바구니</button>
+				
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+
+
+<hr>
+
+<!-- 제품 상세 사진 및 설명 -->
+	<div class=d_pics>
+	<p align="center">한 여름을 제외하고 모든 계절에 착용 가능한 블레이져 </p>
+	<p align="center"><br></p>
+	<p align="center">어쩌고 저쩌고 어쩌고 저쩌고 어쩌고 저쩌고 어쩌고 저쩌고</p>
+	<p align="center"><br></p>
+	<p align="center">살꺼 말꺼 사지마 살꺼야? 아냐 사지마 저리가 </p>
+	<p align="center"><br></p>
+	<p align="center">이걸 왜 사는거야 바보야? 어쩌고 저쩌고 블라블라블라브라</p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><br></p>
+	<p align="center"><img src="../images/맨투맨.jpeg" alt="My Image" ></p>
+			
+			
+	</div>
+</div>
+
+
+
+</div>	
+
+
+
+<!-- 제품 설명 ${vo.p_content}-->
+<div>
+
+</div>
+
+
+
+
+	<jsp:include page="../frame/footer.jsp" />	
+</body>
+</html>

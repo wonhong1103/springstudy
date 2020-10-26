@@ -1,0 +1,165 @@
+package com.ict.db;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.mybatis.spring.SqlSessionTemplate;
+
+public class DAO {
+	private SqlSessionTemplate sqlSessionTemplate;
+
+	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+		this.sqlSessionTemplate = sqlSessionTemplate;
+	}
+
+	public MVO getLogIn(MVO m_vo) throws Exception {
+		MVO mvo = null;
+		mvo = sqlSessionTemplate.selectOne("login", m_vo);
+        return mvo;				
+	}
+	
+	
+	/*
+	 * 아이디 체크 (쿼리)
+	 * public MVO idCheck(String m_id) throws Exception { MVO mvo = null; mvo =
+	 * sqlSessionTemplate.selectOne(m_id); return }
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public VO getOneList(String idx) throws Exception{
+		VO vo = null;
+		vo = sqlSessionTemplate.selectOne("onelist", idx);
+		return vo;
+	}
+	public List<CVO> getCartList(String m_id)throws Exception{
+		List<CVO> clist= null;
+		clist = sqlSessionTemplate.selectList("cartall", m_id);
+		return clist;
+	}
+	
+	public CVO getCartList(String id, String p_num) throws Exception{
+		CVO cvo = null;
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", id);
+		map.put("p_num", p_num);
+		cvo = sqlSessionTemplate.selectOne("p_cartlist", map);
+		return cvo;
+	}
+	public void getCartInsert(CVO cvo) throws Exception{
+		sqlSessionTemplate.insert("cartInsert", cvo);
+	}
+	public void getCartUpdate(CVO cvo) throws Exception{
+		sqlSessionTemplate.update("cartUpdate", cvo);
+	}
+	public void getCartDel(CVO cvo) throws Exception{
+		sqlSessionTemplate.delete("cartDel", cvo);
+	}
+	public void getCartEdit(CVO cvo) throws Exception{
+		sqlSessionTemplate.update("cartEdit", cvo);
+	}	
+	
+	
+	
+	
+	
+	
+	
+		// 리뷰
+		// 전체 게시물의 수
+		public int reviewGetTotalCount() throws Exception{
+			int result = 0 ;
+			result = sqlSessionTemplate.selectOne("review_count");
+			return result;
+		}
+		
+		// 리스트
+		public List<RVO> reviewGetList(int begin, int end) throws Exception{
+		
+			List<RVO> list = null;
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("begin", begin);
+			map.put("end", end);
+			list = sqlSessionTemplate.selectList("review_list", map);
+			return list;
+		}
+		
+		// 원글삽입
+		public int reviewGetInsert(RVO rvo) throws Exception{
+			int result = 0 ;
+			result = sqlSessionTemplate.insert("review_insert", rvo);
+			return result;
+		}
+		
+		// hit 업데이트
+		public void reviewGetHitUpdate(String r_idx) throws Exception {
+			sqlSessionTemplate.update("review_hitup", r_idx);
+		}
+		// 상세보기 
+		public RVO reviewGetOneList(String r_idx) throws Exception{
+			RVO rvo = null;
+			rvo = sqlSessionTemplate.selectOne("review_onelist", r_idx);
+			return rvo;
+		}
+		
+		public int reviewGetUpdate(RVO rvo) throws Exception {
+			int result = 0;
+			result = sqlSessionTemplate.update("review_update", rvo);
+			return result;
+		}
+
+		public void reviewGetDelete(String r_idx) throws Exception {
+			sqlSessionTemplate.delete("review_delete", r_idx);
+		}
+		
+		
+		
+		//board
+		// levUp
+		public void reviewGetLevUp(Map<String, Integer> map) throws Exception{
+			sqlSessionTemplate.update("review_levup", map);
+		}		
+		// ans_insert
+		public int reviewGetAnsInsert(RVO rvo) throws Exception{
+			int result = 0 ;
+			result = sqlSessionTemplate.insert("review_ans_insert", rvo);
+			return result;
+		}
+		
+		
+		
+		//bbs
+		public List<CVO> getCommList(String b_idx){
+			List<CVO> c_list = null;
+			c_list = sqlSessionTemplate.selectList("c_list", b_idx);
+			return c_list;
+		}
+		public void getCommWrite(CVO cvo) {
+			sqlSessionTemplate.insert("c_insert", cvo);
+		}		
+		public void getCommDelete(CVO cvo) {
+			sqlSessionTemplate.delete("c_delete", cvo);
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

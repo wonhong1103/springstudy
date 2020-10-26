@@ -1,0 +1,253 @@
+package com.ict.controller;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ict.db.CVO;
+import com.ict.db.DAO;
+import com.ict.db.MVO;
+import com.ict.db.NVO;
+import com.ict.db.RVO;
+import com.ict.db.R_CVO;
+import com.ict.db.VO;
+import com.ict.model.Paging;
+
+@Controller
+public class NoticeController {
+	@Autowired
+	private DAO dao;
+	@Inject
+	private Paging paging;
+
+	public void setDao(DAO dao) {
+		this.dao = dao;
+	}
+	public void setPaging(Paging paging) {
+		this.paging = paging;
+	}
+	
+	// 리뷰
+	String cPage;
+	@RequestMapping("noticeList.do")
+	public ModelAndView reviewListCommand(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("Notice/N_list");
+		try {
+			//1. 전체 게시물의 수
+			int count = dao.noticeGetTotalCount();
+			paging.setTotalRecord(count);
+			
+			// 2. 전체 페이지의 수
+			if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+				paging.setTotalPage(1);
+			}else {
+				paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+				if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+					paging.setTotalPage(paging.getTotalPage()+1);
+				}
+			}
+			// 3. cPage
+			String cPage = request.getParameter("cPage");
+			if(cPage == null) {
+				paging.setNowPage(1);
+			}else {
+				paging.setNowPage(Integer.parseInt(cPage));
+			}
+			
+			// 4. 시작번호, 끝번호
+			paging.setBegin((paging.getNowPage()-1)* paging.getNumPerPage()+1);
+			paging.setEnd((paging.getBegin()-1)+paging.getNumPerPage());
+			
+			// 5. 시작 블록 , 끝블록
+			paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock()) * paging.getPagePerBlock()+1);
+			paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+			
+			// 6. 주의 사항
+			if(paging.getEndBlock() > paging.getTotalPage()) {
+				paging.setEndBlock(paging.getTotalPage());
+			}
+			
+			List<NVO> list = dao.reviewGetList(paging.getBegin(), paging.getEnd());
+		
+			mv.addObject("list", list);
+			mv.addObject("paging",paging);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	
+	@RequestMapping("noticeWrite.do")
+	public ModelAndView noticeWriteCommand() {
+		return new ModelAndView("Notice/N_write");
+	}
+	
+	@RequestMapping(value = "noticewrite_ok.do", method = RequestMethod.POST)
+	public ModelAndView reviewWriteOKCommand(NVO nvo, HttpSession session, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("redirect:noticewList.do");
+		try {
+			String path = session.getServletContext().getRealPath("/resources/upload");
+			MultipartFile file = nvo.getFile();
+			// 추가 
+			nvo.setM_id((String)request.getSession().getAttribute("log_id"));
+			if(file.isEmpty()) {
+				nvo.setFile_name("");
+			}else {
+				nvo.setFile_name(file.getOriginalFilename());
+			}
+			int result = dao.noticeGetInsert(nvo);
+			if(result>0) {
+				file.transferTo(new File(path+"/"+nvo.getFile_name()));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	@RequestMapping("noticeOnelist.do")
+	public ModelAndView noticeOneListCommand(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("Notice/N_onelist");
+		try {
+			String n_idx = request.getParameter("n_idx");
+			String cPage = request.getParameter("cPage");
+			
+			// hint update
+			dao.reviewGetHit(n_idx);
+			
+			// 상세보기 
+			RVO rvo = dao.reviewGetOneList(n_idx);
+			
+			// 세션에 저장
+			request.getSession().setAttribute("nvo", nvo);
+			
+			
+			
+			// cPage 저장
+			mv.addObject("cPage", cPage);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	@RequestMapping("noticeDownload.do")
+	public void noticeFileDown(HttpServletRequest request, 
+			HttpServletResponse response) {
+		try {
+			String file_name = request.getParameter("file_name");
+			String path = request.getSession().getServletContext()
+					.getRealPath("/resources/upload/"+file_name);
+			// 브라우저 설정
+			response.setContentType("application/x-msdownload");
+			response.setHeader("Content-Disposition",
+			"attachment; filename = "+URLEncoder.encode(file_name,"utf-8"));
+			
+			// 실제 다운로드
+			File file = new File(new String(path.getBytes()));
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream in = new BufferedInputStream(fis);			
+			OutputStream out = response.getOutputStream();
+			FileCopyUtils.copy(in, out);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	@RequestMapping("noticeUpdate.do")
+	public ModelAndView noticeUpdateCommand(@ModelAttribute("cPage")String cPage) {
+		ModelAndView mv = new ModelAndView("Notice/N_update");
+		return mv;
+	}
+	
+	@RequestMapping(value="noticeUpdate_ok.do", method=RequestMethod.POST)
+	public ModelAndView noticeUpdate_okCommand(NVO nvo, HttpServletRequest request) {
+		String cPage = request.getParameter("cPage");		
+		String f_name = request.getParameter("f_name");
+		String n_idx = request.getParameter("n_idx");
+		nvo.setN_idx(n_idx);
+		
+		ModelAndView mv 
+		= new ModelAndView("redirect:reviewOnelist.do?cPage="+cPage+"&idx="+nvo.getR_idx());
+		try {
+			String path = request.getSession()
+					.getServletContext().getRealPath("/resources/upload");
+			
+			MultipartFile file = nvo.getFile();
+			if(file.isEmpty()) {
+				nvo.setFile_name(f_name);
+			}else {
+				nvo.setFile_name(nvo.getFile().getOriginalFilename());
+			}
+			
+			int result = dao.noticeGetUpdate(nvo);
+			if(result>0) {
+				file.transferTo(new File(path+"/"+nvo.getFile_name()));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}		
+		return mv;
+	}	
+	
+	@RequestMapping("noticeDelete.do")
+	public ModelAndView noticeDeleteCommand(@ModelAttribute("cPage")String cPage) {
+		return new ModelAndView("Notice/N_delete");
+	}
+	
+	@RequestMapping("noticeDelete_ok.do")
+	public ModelAndView noticeDelete_okCommand(HttpSession session, @RequestParam("cPage")String cPage) {
+		ModelAndView mv = new ModelAndView("redirect:noticeList.do?cPage="+cPage);
+		System.out.println("cPage="+cPage);
+		try {
+			NVO nvo = (NVO) session.getAttribute("rvo");
+			dao.noticeGetDelete(nvo.getN_idx());
+		}catch (Exception e) {
+		}
+		return mv;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

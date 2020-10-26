@@ -1,0 +1,220 @@
+package com.ict.controller;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ict.db.DAO;
+import com.ict.db.VO;
+import com.ict.model.Paging;
+
+@Controller
+public class MyController {
+	@Autowired
+	private DAO dao;
+	@Inject
+	private Paging paging;
+	public void setDao(DAO dao) {
+		this.dao = dao;
+	}
+	public void setPaging(Paging paging) {
+		this.paging = paging;
+	}
+	
+	@RequestMapping("list.do")
+	public ModelAndView listCommand(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("list");
+		try {
+			//1. 전체 게시물의 수
+			int count = dao.getTotalCount();
+			paging.setTotalRecord(count);
+			
+			// 2. 전체 페이지의 수
+			if(paging.getTotalRecord() <= paging.getNumPerPage()) {
+				paging.setTotalPage(1);
+			}else {
+				paging.setTotalPage(paging.getTotalRecord()/paging.getNumPerPage());
+				if(paging.getTotalRecord()%paging.getNumPerPage() != 0) {
+					paging.setTotalPage(paging.getTotalPage()+1);
+				}
+			}
+			// 3. cPage
+			String cPage = request.getParameter("cPage");
+			if(cPage == null) {
+				paging.setNowPage(1);
+			}else {
+				paging.setNowPage(Integer.parseInt(cPage));
+			}
+			
+			// 4. 시작번호, 끝번호
+			paging.setBegin((paging.getNowPage()-1)* paging.getNumPerPage()+1);
+			paging.setEnd((paging.getBegin()-1)+paging.getNumPerPage());
+			
+			// 5. 시작 블록 , 끝블록
+			paging.setBeginBlock((int)((paging.getNowPage()-1)/paging.getPagePerBlock()) * paging.getPagePerBlock()+1);
+			paging.setEndBlock(paging.getBeginBlock()+paging.getPagePerBlock()-1);
+			
+			// 6. 주의 사항
+			if(paging.getEndBlock() > paging.getTotalPage()) {
+				paging.setEndBlock(paging.getTotalPage());
+			}
+			
+			List<VO> list = dao.getList(paging.getBegin(), paging.getEnd());
+		
+			mv.addObject("list", list);
+			mv.addObject("paging",paging);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	
+	@RequestMapping("write.do")
+	public ModelAndView writeCommand() {
+		return new ModelAndView("write");
+	}
+	
+	@RequestMapping(value = "write_ok.do", method = RequestMethod.POST)
+	public ModelAndView writeOKCommand(VO vo, HttpSession session) {
+		ModelAndView mv = new ModelAndView("redirect:list.do");
+		try {
+			String path = 
+					session.getServletContext()
+					.getRealPath("/resources/upload");
+			MultipartFile file = vo.getFile();
+			if(file.isEmpty()) {
+				vo.setFile_name("");
+			}else {
+				vo.setFile_name(file.getOriginalFilename());
+			}
+			int result = dao.getInsert(vo);
+			if(result>0) {
+				file.transferTo(new File(path+"/"+vo.getFile_name()));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	@RequestMapping("onelist.do")
+	public ModelAndView oneListCommand(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("onelist");
+		try {
+			String idx = request.getParameter("idx");
+			String cPage = request.getParameter("cPage");
+			
+			// hint update
+			dao.getHitUpdate(idx);
+			
+			// 상세보기 
+			VO vo = dao.getOneList(idx);
+			
+			// 세션에 저장
+			request.getSession().setAttribute("vo",vo);
+			
+			// cPage 저장
+			mv.addObject("cPage", cPage);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+	@RequestMapping("download.do")
+	public void FileDown(HttpServletRequest request, 
+			HttpServletResponse response) {
+		try {
+			String file_name = request.getParameter("file_name");
+			String path = request.getSession().getServletContext()
+					.getRealPath("/resources/upload/"+file_name);
+			// 브라우저 설정
+			response.setContentType("application/x-msdownload");
+			response.setHeader("Content-Disposition",
+			"attachment; filename = "+URLEncoder.encode(file_name,"utf-8"));
+			
+			// 실제 다운로드
+			File file = new File(new String(path.getBytes()));
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream in = new BufferedInputStream(fis);
+			
+			OutputStream out = response.getOutputStream();
+			FileCopyUtils.copy(in, out);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	@RequestMapping("ans_write.do")
+	public ModelAndView ans_writeCommand(@ModelAttribute("cPage")String cPage) {
+		return new ModelAndView("ans_write");
+	}
+	
+	@RequestMapping(value = "ans_write_ok.do", method = RequestMethod.POST)
+	public ModelAndView ans_writeOKCommand(VO vo, HttpSession session, 
+			@ModelAttribute("cPage")String cPage) {
+		ModelAndView mv = new ModelAndView("redirect:list.do");
+		try {
+			int lev = Integer.parseInt(vo.getLev());
+			int step = Integer.parseInt(vo.getStep());
+			int groups = Integer.parseInt(vo.getGroups());
+			
+			step++;
+			lev++;
+			
+			// DB에 groups, lev를 이용해서 업데이트 한다.
+			// groups이 같은 원글 찾아서 레벨이 같거나 크면  레벨 증가 
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("groups", groups);
+			map.put("lev", lev);
+			
+			dao.getLevUp(map); 
+			 
+			vo.setStep(String.valueOf(step));
+			vo.setLev(String.valueOf(lev));
+			
+			// 댓글 삽입
+			String path = session.getServletContext().getRealPath("/resources/upload");
+			MultipartFile file = vo.getFile();
+			
+			if(file.isEmpty()) {
+				bvo.setFile_name("");
+			}else {
+				bvo.setFile_name(file.getOriginalFilename());
+			}
+			int result = dao.getAnsInsert(vo);
+			if(result>0) {
+				file.transferTo(new File(path+"/"+vo.getFile_name()));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+}
+
+
+
+
+
+
+

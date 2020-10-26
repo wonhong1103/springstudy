@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="member">
+ <select id="login" resultType="mvo" parameterType="com.ict.db.MVO"  >
+		select * from members where m_id = #{m_id} and m_pw = #{m_pw} 
+	</select>
+	
+	
+	
+	
+	<select id="p_cartlist" resultType="cvo" parameterType="Map" >
+		select * from cart where id=#{id} and p_num=#{p_num}
+	</select>
+	
+	<insert id="cart_Insert" parameterType="cvo" >
+		insert into cart values(cart_seq.nextval, #{p_num}, #{p_name},#{p_price},1,#{id})
+	</insert>
+	
+	<update id="cart_Update" parameterType="cvo" >
+		update cart set p_su = p_su + 1  where id=#{id} and p_num=#{p_num} 
+	</update>
+	
+	<select id="cart_all" resultType="cvo" parameterType="String" >
+		select * from cart where id = #{id}
+	</select>
+	<update id="cart_up" parameterType="cvo" >
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	<delete id="cart_Del" parameterType="cvo" >
+		delete from cart where id=#{id} and p_num=#{p_num}
+	</delete>
+	<update id="cart_Edit" parameterType="cvo"  >
+		update cart set p_su=#{p_su} where id=#{id} and p_num=#{p_num}
+	</update>
+	
+	
+	
+	<!-- 전체 후기의 수 -->
+	<select id="review_count" resultType="int" >
+		select count(*) from review 
+	</select>
+	<!-- 목록 -->
+	<select id="review_list" resultType="rvo" parameterType="Map" >
+		select * from(select rownum r_num, a.* from(select * from review order by groups desc, lev asc) a )where r_num between #{begin} and #{end} 
+	</select>
+	<!-- 후기 작성 -->
+	<insert id="review_insert" parameterType="rvo" >
+		insert into review values(board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,group_seq.nextval,0,0,sysdate,#{file_name}) 
+	</insert>
+	<!-- 조회수 update -->
+	<update id="review_hitup" parameterType="String" >
+		update review set hit = hit + 1 where idx = #{idx} 
+	</update>
+	<!-- 상세보기 -->
+	<select id="review_onelist" resultType="rvo" parameterType="String" >
+		select * from review where idx = #{idx} 
+	</select>
+	<!-- 후기 수정 -->
+	<update id="review_update" parameterType="rvo" >
+		update review set writer=#{writer}, title=#{title},content=#{content}, file_name=#{file_name} where idx=#{idx} 
+	</update>
+	<!-- 후기 삭제 -->
+	<delete id="review_delete" parameterType="String" >
+		delete from review where idx = #{idx} 
+	</delete>
+	<!-- 후기에 달린 댓글 lev_up -->
+	<update id="review_lev_up" parameterType="Map" >
+		update review set lev = lev + 1 where groups = #{groups} and lev >= #{lev} 
+	</update>
+	<!-- 후기 댓글 삽입 -->
+	<insert id="review_ans_insert" parameterType="rvo" >
+		insert into review values(board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,#{groups},#{step},#{lev},sysdate,#{file_name}) 
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+ </mapper>

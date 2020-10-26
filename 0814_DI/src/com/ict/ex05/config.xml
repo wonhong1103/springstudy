@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="mp" class="com.ict.ex05.MapPrint">
+		<!-- setter 이용 -->
+		<property name="map1">
+			<map>
+				<entry key="id" value="kkkk" />
+				<entry key="pw" value="k1212" />
+				<entry key="name" value="태권브이" />
+				<entry key="age" value="27" />
+				<entry key="addr" value="국회의사당" />
+			</map>
+		</property>
+		<property name="map2">
+			<map>
+				<entry key="1001" value="oh12" />
+				<entry key="1005" value="oh1212" />
+				<entry key="1007" value="아라치" />
+				<entry key="1009" value="18" />
+				<entry key="1010" value="남극" />
+			</map>
+		</property>
+	</bean>
+</beans>

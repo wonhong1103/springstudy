@@ -1,0 +1,63 @@
+package com.ict.db;
+
+public class R_CVO {
+	private String r_c_idx, writer, content, pwd, write_date, r_idx, m_id;
+
+	
+	public String getM_id() {
+		return m_id;
+	}
+
+	public void setM_id(String m_id) {
+		this.m_id = m_id;
+	}
+
+	public String getR_C_idx() {
+		return r_c_idx;
+	}
+
+	public void setR_C_idx(String r_c_idx) {
+		this.r_c_idx = r_c_idx;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getWrite_date() {
+		return write_date;
+	}
+
+	public void setWrite_date(String write_date) {
+		this.write_date = write_date;
+	}
+
+	public String getR_idx() {
+		return r_idx;
+	}
+
+	public void setR_idx(String r_idx) {
+		this.r_idx = r_idx;
+	}
+	
+}

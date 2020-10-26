@@ -1,0 +1,274 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인 화면</title>
+<!-- 전체 css -->
+<style type="text/css">
+li {list-style: none;}
+body, html {height:100%; margin:0px; padding:0px;font-family: 'Times New Roman', serif;}
+a {text-decoration: none;color: black;}
+</style>
+<!-- 왼 사이드바 -->
+<style type="text/css">
+#s_sidebar {float: left;background-color: gray;position: fixed;width: 250px;height: 100%;}
+#s_sidebar ul ul {margin: 2px;padding: 2px;position: relative;text-align: center;}
+#s_sidebar ul li li {width: 200px;height: 30px;line-height: 30px;}
+#s_sidebar ul ul li:hover {background: darkgray;}
+#s_sidebar ul ul li:hover ul {display: block;}
+#s_sidebar ul ul li a {width: 200px;height: 30px;line-height: 30px}
+#s_sidebar ul ul ul {display: none;position: absolute;left: 205px;top: 0px;background-color: gray}
+</style>
+<!-- 로그인 css -->
+<style>
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+    .wrapper { width:100%; height:80%; padding-top:5%; font-family: '돋움';}
+    .main { }
+    
+    .login_box { width:300px; height:350px; padding: 40px; margin: 0 auto;   
+                  border: 1px solid black;}
+    .login_box .input_login { border-bottom: 2px solid gray; padding: 20px 0 9px 0;}
+    .login_box .input_login input { width: 100%; color: gray; font-size: 15px; border:none; font-family:inherit;}
+    .login_box .check { color: black; font-size: 14px; padding: 10px 0px 15px 0px; font-family: '돋움';}
+    
+    .login_box  .login input { width:100%; height:55px;  font-size:16px; 
+                               padding:17px 0 16px; border:0; cursor:pointer; font-family:'돋움';}
+    
+    .login_box .last { width:100%; margin-top:10px; border-top:1px solid gray; padding-top:20px;}
+    .login_box .last .join { float:left;}
+    .login_box .last .search { float:right;}
+    .login_box .last .join a { color: gray;}
+    .login_box .last .search a { color:gray;} 
+</style>
+
+
+<!-- 로그인 스크립트 -->
+<script type="text/javascript">
+	function login_ok(f) {
+		f.action = "login_ok.do";
+		f.submit();
+		if (document.getElementById("login_id").value != document
+				.getElementById("hidden1").value) {
+			alert("아이디가 틀렸습니다.");
+		}
+		if (document.getElementById("login_pw").value != document
+				.getElementById("hidden2").value) {
+			alert("비밀번호가 틀렸습니다.");
+		}
+	}
+	function join_go() {
+		f.action = "join.do";
+		f.submit();
+	}
+	function fidnidpw_go(f) {
+		f.action = "findidpw.do";
+		f.submit();
+	}
+</script>
+
+</head>
+<body>
+	<!-- 헤더 (암것도 없음) -->
+	<header id="main_header"> </header>
+
+	<!-- 왼쪽메뉴바 -->
+	<nav id="sidebar">
+
+		<div id="s_sidebar">
+			<ul>
+				<div id="title">
+					<h1 style="Font-size: 40px; text-align: center;">
+						<a href="home.do">가나다라</a>
+					</h1>
+					<br> <br>
+					<div id="main_gnb">
+						<li class="m_bar"><a href="#">장바구니</a></li>
+						<li class="m_bar"><a href="#">마이페이지</a></li>
+						<li class="m_bar"><a href="#">로그인</a></li>
+					</div>
+					<br> <br> <br> <br> <br>
+				</div>
+				<li>TOP
+					<ul>
+						<li>OUTER
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>JACKET
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>SHIRTS
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+
+				<li>BOTTOM
+					<ul>
+						<li>JEANS
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>SLACKS
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>SHORTS
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+
+				<li>ACCESSORY
+					<ul>
+						<li>SHOES
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>BAGS
+							<ul>
+								<li><a href="#">s menu1</a></li>
+								<li><a href="#">s menu2</a></li>
+								<li><a href="#">s menu3</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>ACCESSORY
+							<ul>
+								<li><a href="#">ring</a></li>
+								<li><a href="#">necklace</a></li>
+								<li><a href="#">watch</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<div class="other">
+					<li><a href="#">QnA</a></li>
+					<li><a href="#">공지사항</a></li>
+					<li><a href="#">후기</a></li>
+				</div>
+
+				<form>
+					<fieldset class="width: 150px;">
+						<legend>검색</legend>
+						<input id="keyword" name="keyword" fw-filter="" fw-label="검색어"
+							fw-msg="" class="inputTypeText" placeholder=""
+							onmousedown="SEARCH_BANNER.clickSearchForm(this)" value=""
+							type="text">
+
+						<div class="searchbtn"
+							onclick="SEARCH_BANNER.submitSearchBanner(this); return false;">
+							<i class="xi-search" aria-hidden="true"></i>
+						</div>
+
+					</fieldset>
+				</form>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- 로그인창 -->
+ <div class="wrapper">
+        <div class="main">
+            <div class="login_box">
+                <div class="input_login">
+                    <input type="text" name="m_id" placeholder="아이디을 입력하세요">
+                </div>
+                <div class="input_login">
+                    <input type="password" name="m_pw" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div class="check">
+                    <label><input type="checkbox">로그인 유지</label>
+                    <input type="hidden" >
+                </div>
+                <div class="login">
+                    <input type="button" value="로그인" onclick="login_ok(this.form)">
+                </div>
+                <div class="last">
+               	 	<input class="join" type="button" value="회원가입" onclick="join_go()">
+                	<input class="search" type="button" value="ID/PW 찾기" onclick="findidpw_go()">
+                    <!-- <div class="join"><a href="join_go(this.form)">회원가입</a></div>
+                    	 <div class="search"><a href="findidpw_go(this.form)">ID/PW 찾기</a></div> 
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<!-- 하단 -->
+
+	<footer style="margin-left: 310px; margin-right: auto; ">
+		<hr>
+		<div style="display: block; float: left; margin-right: 10%;">
+
+			<p>
+			<h4>CUSTOMER CENTER</h4>
+			<br> 1588-1588<br> 070-1111-2222 (MESSAGE)<br> MON-FRI
+			am11:00 ~ pm06:00<br> LUNCH pm01:00 ~ pm02:00<br> SAT, SUN,
+			HOLIDAY OFF<br>
+			</p>
+		</div>
+
+		<div style="display: block; float: left; margin-right: 10%;">
+			<p>
+			<h4>BANK INFO</h4>
+			KB국민은행828282-79-9797 <br> 예금주 : 돈좀줘 주식회사<br>
+			</p>
+		</div>
+		<div style="display: block; float: left; margin-right: 10%;">
+			<p>
+			<h4>RETURN & EXCHANGE</h4>
+			반품주소 : 경기도 부천시 여월동 여월휴먼시아에서 반품 안함<br> CJ대한통운 1588-1255 (월~금
+			09:00~18:00 / 토 09:00~13:00)<br> 자세한 교환 및 반품절차는 공지사항을 참고해주시기
+			바랍니다.<br>
+			</p>
+		</div>
+	</footer>
+</body>
+</html>
