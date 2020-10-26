@@ -6,20 +6,7 @@ public class RVO {
 	private String r_idx, r_subject, r_writer, r_content, r_file_name, 
 	r_pwd, r_write_date, r_hit, m_id;
 	private MultipartFile r_file;	
-	public RVO(String r_idx, String r_subject, String r_writer, String r_content, String r_file_name, String r_pwd,
-			String r_write_date, String r_hit, String m_id, MultipartFile r_file) {
-		super();
-		this.r_idx = r_idx;
-		this.r_subject = r_subject;
-		this.r_writer = r_writer;
-		this.r_content = r_content;
-		this.r_file_name = r_file_name;
-		this.r_pwd = r_pwd;
-		this.r_write_date = r_write_date;
-		this.r_hit = r_hit;
-		this.m_id = m_id;
-		this.r_file = r_file;
-	}
+
 	public String getM_id() {
 		return m_id;
 	}

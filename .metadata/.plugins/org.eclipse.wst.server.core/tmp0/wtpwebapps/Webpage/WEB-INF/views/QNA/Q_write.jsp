@@ -92,7 +92,7 @@ function qnaList_go(f) {
 					<td colspan="2">
 						<input type="button" value="보내기" onclick="qnaSend_go(this.form)"/>
 						<input type="reset" value="다시"/>
-						<input type="button" value="목록" onclick="qnsList_go(this.form)"/>
+						<input type="button" value="목록" onclick="qnaList_go(this.form)"/>
 					</td>
 				</tr>
 			</tbody>

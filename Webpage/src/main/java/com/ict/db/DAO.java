@@ -83,6 +83,71 @@ public class DAO {
 	
 	
 	
+	//qna
+			// 전체 게시물의 수
+			public int qnaGetTotalCount() throws Exception{
+				int result = 0 ;
+				result = sqlSessionTemplate.selectOne("qna_count");
+				return result;
+			}
+					
+			// 리스트
+			public List<QVO> qnaGetList(int begin, int end) throws Exception{
+					
+				List<QVO> list = null;
+				Map<String, Integer> map = new HashMap<String, Integer>();
+				map.put("begin", begin);
+				map.put("end", end);
+				list = sqlSessionTemplate.selectList("qna_list", map);
+				return list;
+			}
+					
+			// 원글삽입
+			public int qnaGetInsert(QVO qvo) throws Exception{
+				int result = 0 ;
+				result = sqlSessionTemplate.insert("qna_insert", qvo);
+				return result;
+			}
+					
+			// hit 업데이트
+			public void qnaGetHit(String q_idx) throws Exception {
+				sqlSessionTemplate.update("qna_hit", q_idx);
+			}
+			// 상세보기 
+			public QVO qnaGetOneList(String q_idx) throws Exception{
+				QVO qvo = null;
+				qvo = sqlSessionTemplate.selectOne("qna_onelist", q_idx);
+				return qvo;
+			}
+					
+			public int qnaGetUpdate(QVO qvo) throws Exception {
+				int result = 0;
+				result = sqlSessionTemplate.update("qna_update", qvo);
+				return result;
+			}
+
+			public void qnaGetDelete(String q_idx) throws Exception {
+				sqlSessionTemplate.delete("qna_delete", q_idx);
+			}	
+					
+			//bbs
+			public List<Q_CVO> qnaGetCommentList(String q_idx){
+				List<Q_CVO> q_c_list = null;
+				q_c_list = sqlSessionTemplate.selectList("q_c_list", q_idx);
+				return q_c_list;
+			}
+			public void qnaGetCommentWrite(Q_CVO q_cvo) {
+				sqlSessionTemplate.insert("q_c_insert", q_cvo);
+			}		
+			public void qnaGetCommentDelete(Q_CVO q_cvo) {
+				sqlSessionTemplate.delete("q_c_delete", q_cvo);
+			}		
+			
+	
+	
+	
+	
+	
 	
 	
 	
@@ -148,70 +213,6 @@ public class DAO {
 	
 	
 		
-		//qna
-		// 전체 게시물의 수
-		public int qnaGetTotalCount() throws Exception{
-			int result = 0 ;
-			result = sqlSessionTemplate.selectOne("qna_count");
-			return result;
-		}
-				
-		// 리스트
-		public List<QVO> qnaGetList(int begin, int end) throws Exception{
-				
-			List<QVO> list = null;
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			map.put("begin", begin);
-			map.put("end", end);
-			list = sqlSessionTemplate.selectList("qna_list", map);
-			return list;
-		}
-				
-		// 원글삽입
-		public int qnaGetInsert(QVO qvo) throws Exception{
-			int result = 0 ;
-			result = sqlSessionTemplate.insert("qna_insert", qvo);
-			return result;
-		}
-				
-		// hit 업데이트
-		public void qnaGetHit(String q_idx) throws Exception {
-			sqlSessionTemplate.update("qna_hit", q_idx);
-		}
-		// 상세보기 
-		public QVO qnaGetOneList(String q_idx) throws Exception{
-			QVO qvo = null;
-			qvo = sqlSessionTemplate.selectOne("qna_onelist", q_idx);
-			return qvo;
-		}
-				
-		public int qnaGetUpdate(QVO qvo) throws Exception {
-			int result = 0;
-			result = sqlSessionTemplate.update("qna_update", qvo);
-			return result;
-		}
-
-		public void qnaGetDelete(String q_idx) throws Exception {
-			sqlSessionTemplate.delete("qna_delete", q_idx);
-		}	
-				
-		//bbs
-		public List<Q_CVO> qnaGetCommentList(String q_idx){
-			List<Q_CVO> q_c_list = null;
-			q_c_list = sqlSessionTemplate.selectList("q_c_list", q_idx);
-			return q_c_list;
-		}
-		public void qnaGetCommentWrite(Q_CVO q_cvo) {
-			sqlSessionTemplate.insert("q_c_insert", q_cvo);
-		}		
-		public void qnaGetCommentDelete(Q_CVO q_cvo) {
-			sqlSessionTemplate.delete("q_c_delete", q_cvo);
-		}		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -262,11 +263,6 @@ public class DAO {
 				public void noticeGetDelete(String n_idx) throws Exception {
 					sqlSessionTemplate.delete("notice_delete", n_idx);
 				}
-	
-	
-	
-	
-	
 	
 	
 	

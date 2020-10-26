@@ -55,6 +55,7 @@ table {
 	
 	<!-- 로그인창 -->
  <div class="wrapper">
+ 	<form action="">
         <div class="main">
             <div class="login_box">
                 <div class="input_login">
@@ -79,6 +80,7 @@ table {
                 </div>
             </div>
         </div>
+        </form>
     </div>
 
 	<jsp:include page="../frame/footer.jsp" />

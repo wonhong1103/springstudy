@@ -9,18 +9,15 @@
 	</select>
 	<!-- 회원가입 -->
 	<insert id="member_join" parameterType="com.ict.db.MVO">
-		insert into members(NEXT VALUE FOR member_seq, #{m_id}, #{m_pw}, #{m_name}, #{m_email},#{m_addr}) 
+		insert into members values( member_seq.nextval, #{m_id}, #{m_pw}, #{m_name}, #{m_email},#{m_addr}, #{m_phone}) 
 	</insert>
 		
 	<select resultType="String" id="checkid" parameterType="String">
-		select m_id from members where m_id =#{m_id} 
+		select m_id from members where m_id = #{m_id} 
 	</select>
 	
-	<!--  아이디 확인 
-	<select id="idcheck" resultType="mvo">
-		select m_id from members where m_id = #{m_id}
-	</select>
-	 -->
+	
+	 
 	
 	
 	<!-- 장바구니 -->

@@ -2,18 +2,7 @@ package com.ict.db;
 
 public class R_CVO {
 	private String r_c_idx, r_c_writer, r_c_content, r_c_pwd, r_c_write_date, r_idx, m_id;
-	public R_CVO(String r_c_idx, String r_c_writer, String r_c_content, String r_c_pwd, String r_c_write_date,
-			String r_idx, String m_id) {
-		super();
-		this.r_c_idx = r_c_idx;
-		this.r_c_writer = r_c_writer;
-		this.r_c_content = r_c_content;
-		this.r_c_pwd = r_c_pwd;
-		this.r_c_write_date = r_c_write_date;
-		this.r_idx = r_idx;
-		this.m_id = m_id;
-	}
-
+	
 	public String getR_c_idx() {
 		return r_c_idx;
 	}

@@ -1,9 +1,9 @@
 package com.ict.db;
 
 public class MVO {
-	private String idx, m_id, m_pw, m_name, m_email, m_addr;
+	private String idx, m_id, m_pw, m_name, m_email, m_addr, m_phone;
 	public MVO() {}
-	public MVO(String idx, String m_id, String m_pw, String m_name, String m_email, String m_addr) {
+	public MVO(String idx, String m_id, String m_pw, String m_name, String m_email, String m_addr, String m_phone) {
 		super();
 		this.idx = idx;
 		this.m_id = m_id;
@@ -11,6 +11,7 @@ public class MVO {
 		this.m_name = m_name;
 		this.m_email = m_email;
 		this.m_addr = m_addr;
+		this.m_phone = m_phone;
 	}
 	public String getIdx() {
 		return idx;
@@ -48,5 +49,10 @@ public class MVO {
 	public void setM_addr(String m_addr) {
 		this.m_addr = m_addr;
 	}
-	
+	public String getM_phone() {
+		return m_phone;
+	}
+	public void setM_phone(String m_phone) {
+		this.m_phone = m_phone;
+	}
 }

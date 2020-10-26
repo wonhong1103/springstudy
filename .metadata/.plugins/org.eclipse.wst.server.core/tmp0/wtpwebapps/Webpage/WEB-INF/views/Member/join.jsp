@@ -36,6 +36,7 @@ function join_ok(f) {
 		return;
 	} */
 }
+
 function login_go(f) {
 	location.href="loing.do";
 }
@@ -56,7 +57,8 @@ function login_go(f) {
 				<tbody>					
 					<tr>
 						<th>아이디</th>
-						<td><input type="text" name="m_id" placeholder="아이디를 입력하세요"></td>
+						<td><input type="text" name="m_id" placeholder="아이디를 입력하세요"><input type="button" value="중복확인" style="width:100px;" onclick="check_ok(this.form)"></td>
+						
 					</tr>
 					<tr>
 						<th>이름</th>
@@ -66,18 +68,22 @@ function login_go(f) {
 						<th>비밀번호</th>
 						<td><input type="password" name="m_pw" placeholder="패스워드를 입력하세요"></td>
 					</tr>
-					<!-- <tr>
+					<tr>
 						<th>비밀번호 확인</th>
 						<td><input type="password" name="m_pwcheck" placeholder="패스워드를 한번 더 입력하세요"></td>
-					</tr> -->
+					</tr>
 					<tr>
 						<th>e-mail</th>
 						<td><input type="text" name="m_email" placeholder="email을 입력하세요"></td>
 					</tr>
 					<tr>
 						<th>주소</th>
-						<td><input type="text" name="m_reg" placeholder="주소를 입력하세요"></td>
+						<td><input type="text" name="m_addr" placeholder="주소를 입력하세요"></td>
 					</tr>
+					<tr>
+						<th>연락처</th>
+						<td><input type="text"  name="m_phone" placeholder="전화번호를 입력하세요"></td>						
+					</tr>	
 				</tbody>
 				<tfoot>
 					<tr>

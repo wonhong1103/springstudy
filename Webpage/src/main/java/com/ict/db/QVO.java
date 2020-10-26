@@ -6,20 +6,7 @@ public class QVO {
 	private String q_idx, q_subject, q_writer, q_content, q_file_name, 
 	q_pwd, q_write_date, q_hit, m_id;
 	private MultipartFile q_file;
-	public QVO(String q_idx, String q_subject, String q_writer, String q_content, String q_file_name, String q_pwd,
-			String q_write_date, String q_hit, String m_id, MultipartFile q_file) {
-		super();
-		this.q_idx = q_idx;
-		this.q_subject = q_subject;
-		this.q_writer = q_writer;
-		this.q_content = q_content;
-		this.q_file_name = q_file_name;
-		this.q_pwd = q_pwd;
-		this.q_write_date = q_write_date;
-		this.q_hit = q_hit;
-		this.m_id = m_id;
-		this.q_file = q_file;
-	}
+	
 	public String getQ_idx() {
 		return q_idx;
 	}

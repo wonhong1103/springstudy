@@ -58,9 +58,21 @@
 		<h1 style="Font-size:40px; text-align: center; "><a href="home.do">가나다라</a></h1>
 		<br><br>
 			<div id="main_gnb">
-				<li class="m_bar"><a href="cart.do">장바구니</a></li>
-				<li class="m_bar"><a href="#">마이페이지</a></li>
-				<li class="m_bar"><a href="login.do">로그인</a></li>	
+				
+				<div id="log">
+	  				<c:choose>
+	  					<c:when test="${login=='ok'}">
+	  						${mvo.m_name}님 환영합니다.
+	  						<br>
+	  						<a href="logout.do">로그아웃</a> 
+	  						<li class="m_bar"><a href="cart.do?m_id=${mvo.m_id}">장바구니</a></li>
+							<li class="m_bar"><a href="#">마이페이지</a></li>
+	  					</c:when>
+	  					<c:otherwise>
+	  						<a href="login.do">로그인</a>
+	  					</c:otherwise>
+	  				</c:choose>
+	  			  </div>	
 			</div>
 			<br><br><br><br><br>
 		</div>
