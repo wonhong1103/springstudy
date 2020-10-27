@@ -156,22 +156,6 @@ public class MyController {
 	
 	
 	// cart
-	@RequestMapping("productList.do")
-	public ModelAndView productListCommand() {
-		return new ModelAndView("product/products");
-	}
-	@RequestMapping("productDetail.do.do")
-	public ModelAndView productDetailCommand(@RequestParam("p_idx") String p_idx) {
-		ModelAndView mv = new ModelAndView("product/product_detail");
-		try {
-			PVO pvo = dao.productGetOneList(p_idx);
-			mv.addObject("pvo", pvo);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return mv;
-	}
-	
 	
 	@RequestMapping("content.do")
 	public ModelAndView contentCommand(
@@ -188,7 +172,7 @@ public class MyController {
 	
 	@RequestMapping("viewcart.do")
 	public ModelAndView viewCartCommand(@RequestParam("m_id")String m_id) {
-		ModelAndView mv = new ModelAndView("cart/cartlist");
+		ModelAndView mv = new ModelAndView("viewcart");
 		try {
 			List<CVO> cartList = dao.getCartList(m_id);
 			mv.addObject("cartList", cartList);
@@ -262,8 +246,39 @@ public class MyController {
 		}
 	}
 
-	
-	
+	@RequestMapping("productList.do")
+	public ModelAndView productListCommand() {
+		return new ModelAndView("product/products");
+	}
+
+	/*
+	 * @RequestMapping("productDetail.do") public ModelAndView
+	 * productDetailCommand() { return new ModelAndView("product/product_detail"); }
+	 */
+
+	@RequestMapping("productDetail.do.do")
+	public ModelAndView productDetailCommand(@RequestParam("p_idx") String p_idx) {
+		ModelAndView mv = new ModelAndView("product/product_detail");
+		try {
+			PVO pvo = dao.productGetOneList(p_idx);
+			mv.addObject("pvo", pvo);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
+
+	@RequestMapping(value = "cart.do", method = RequestMethod.GET)
+	public ModelAndView cartCommand(@RequestParam("m_id") String m_id) {
+		ModelAndView mv = new ModelAndView("cart/cartlist");
+		try {
+			List<CVO> cartList = dao.getCartList(m_id);
+			mv.addObject("cartlist", cartList);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return mv;
+	}
 
 	
 
