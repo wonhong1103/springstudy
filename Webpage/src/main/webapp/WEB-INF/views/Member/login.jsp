@@ -33,14 +33,6 @@ table {
 	function login_ok(f) {
 		f.action = "login_ok.do";
 		f.submit();
-		if (document.getElementById("log_id").value != document
-				.getElementById("hidden1").value) {
-			alert("아이디가 틀렸습니다.");
-		}
-		if (document.getElementById("login_pw").value != document
-				.getElementById("hidden2").value) {
-			alert("비밀번호가 틀렸습니다.");
-		}
 	}
 	function join_go() {
 		location.href = "join.do";

@@ -58,7 +58,7 @@
 	</select>
 	<!-- qna 작성 -->
 	<insert id="qna_insert" parameterType="qvo" >
-		insert into qna values(qna_seq.nextval, #{q_subject}, #{q_writer}, 
+		insert into QNA values( qna_seq.nextval, #{q_subject}, #{q_writer}, 
 		#{q_content}, #{q_file_name},#{q_pwd}, sysdate, 0, #{m_id})
 	</insert>
 	<!-- qna 조회수 update -->

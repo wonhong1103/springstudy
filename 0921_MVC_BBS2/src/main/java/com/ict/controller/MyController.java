@@ -39,7 +39,7 @@ public class MyController {
 	public void setPaging(Paging paging) {
 		this.paging = paging;
 	}
-	
+
 	@RequestMapping("login_ok.do")
 	public ModelAndView loginOKCommand(MVO mvo, HttpSession session) {
 		ModelAndView mv = new ModelAndView("redirect:list.do");

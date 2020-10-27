@@ -42,10 +42,10 @@ public class CVO {;
 	public void setP_su(String p_su) {
 		this.p_su = p_su;
 	}
-	public String getM_Id() {
+	public String getM_id() {
 		return m_id;
 	}
-	public void setM_Id(String m_id) {
+	public void setM_id(String m_id) {
 		this.m_id = m_id;
 	}
 	

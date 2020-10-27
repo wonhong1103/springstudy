@@ -103,7 +103,7 @@ public class DAO {
 			}
 					
 			// 원글삽입
-			public int qnaGetInsert(QVO qvo) throws Exception{
+			public int qnaGetInsert(QVO qvo) {
 				int result = 0 ;
 				result = sqlSessionTemplate.insert("qna_insert", qvo);
 				return result;

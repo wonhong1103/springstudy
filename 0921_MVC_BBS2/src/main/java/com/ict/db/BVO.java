@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class BVO {
 	private String b_idx, subject, writer, content, file_name, 
 	pwd, write_date, hit, m_id;
-	private MultipartFile file;
 	
 	public String getM_id() {
 		return m_id;
@@ -13,6 +12,8 @@ public class BVO {
 	public void setM_id(String m_id) {
 		this.m_id = m_id;
 	}
+	private MultipartFile file;
+	
 	
 	public String getB_idx() {
 		return b_idx;
