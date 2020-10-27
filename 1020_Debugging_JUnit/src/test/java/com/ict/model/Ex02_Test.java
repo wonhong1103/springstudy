@@ -33,7 +33,7 @@ public class Ex02_Test {
 		System.out.println("테스트 시작");
 		// 미리 값을 넣어서 result의 값을 예상한다.
 		int result = t.add(10,20);
-		// 예상이 맞지 검사하는 것 
+		// 예상이 맞지 검사하는 것
 		// assertEquals(예상값, 나온 결과값);
 		assertEquals(30, result);
 		System.out.println("테스트 끝");

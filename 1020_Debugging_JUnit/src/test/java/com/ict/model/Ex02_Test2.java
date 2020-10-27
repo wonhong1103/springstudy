@@ -37,7 +37,7 @@ public class Ex02_Test2 {
 	public static Collection<Integer[]> getTestParameters(){
 		return Arrays.asList(new Integer[][] {
 			{5,3,2},
-			{-10,3,-2},
+			{1,3,-2},
 			{-1,-3,2},
 			{-5,-3,-2}
 		});
